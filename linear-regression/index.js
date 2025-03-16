@@ -1,6 +1,7 @@
 import * as tfvis from "@tensorflow/tfjs-vis";
 import * as tf from "@tensorflow/tfjs";
 
+// 等页面加载完成之后再处理
 window.onload = () => {
   const xs = [1, 2, 3, 4];
   const ys = [1, 3, 5, 7];
@@ -20,5 +21,12 @@ window.onload = () => {
 
   // 创建连续模型：下一层的输入一定是上一层的输出
   const model = tf.sequential();
+  // dense是全链接层
   model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+  // 设置损失函数（使用MSE均方误差）
+  // 设置优化器（使用SGD随机梯度下降，并设置学习率）
+  model.compile({
+    loss: tf.losses.meanSquaredError,
+    optimizer: tf.train.sgd(0.1),
+  });
 };
