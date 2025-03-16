@@ -2,7 +2,7 @@ import * as tfvis from "@tensorflow/tfjs-vis";
 import * as tf from "@tensorflow/tfjs";
 
 // 等页面加载完成之后再处理
-window.onload = () => {
+window.onload = async () => {
   const xs = [1, 2, 3, 4];
   const ys = [1, 3, 5, 7];
 
@@ -28,5 +28,15 @@ window.onload = () => {
   model.compile({
     loss: tf.losses.meanSquaredError,
     optimizer: tf.train.sgd(0.1),
+  });
+
+  const inputs = tf.tensor(xs);
+  const labels = tf.tensor(ys);
+  await model.fit(inputs, labels, {
+    // 小批量大小
+    batchSize: 4,
+    // 迭代次数
+    epochs: 100,
+    callbacks: tfvis.show.fitCallbacks({ name: "训练过程" }, ["loss"]),
   });
 };
