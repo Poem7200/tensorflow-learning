@@ -1,4 +1,5 @@
 import * as tfvis from "@tensorflow/tfjs-vis";
+import * as tf from "@tensorflow/tfjs";
 
 window.onload = () => {
   const xs = [1, 2, 3, 4];
@@ -16,4 +17,8 @@ window.onload = () => {
       yAxisDomain: [0, 8],
     }
   );
+
+  // 创建连续模型：下一层的输入一定是上一层的输出
+  const model = tf.sequential();
+  model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
 };
