@@ -16,4 +16,15 @@ window.onload = () => {
       ],
     }
   );
+
+  // 初始化模型
+  const model = tf.sequential();
+  // 添加全链接层（因为需要激活函数）
+  model.add(
+    tf.layers.dense({
+      units: 1,
+      inputShape: [2],
+      activation: "sigmoid",
+    })
+  );
 };
