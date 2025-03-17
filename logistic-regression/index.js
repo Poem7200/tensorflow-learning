@@ -2,7 +2,7 @@ import * as tfvis from "@tensorflow/tfjs-vis";
 import * as tf from "@tensorflow/tfjs";
 import { getData } from "./data";
 
-window.onload = () => {
+window.onload = async () => {
   const data = getData(400);
 
   tfvis.render.scatterplot(
@@ -27,4 +27,20 @@ window.onload = () => {
       activation: "sigmoid",
     })
   );
+  // 设置损失函数和优化器
+  model.compile({
+    loss: tf.losses.logLoss,
+    optimizer: tf.train.adam(0.1),
+  });
+
+  // 把特征数量为2的数据转化为Tensor
+  const inputs = tf.tensor(data.map((item) => [item.x, item.y]));
+  const labels = tf.tensor(data.map((item) => item.label));
+
+  // 训练数据
+  await model.fit(inputs, labels, {
+    batchSize: 40,
+    epochs: 50,
+    callbacks: tfvis.show.fitCallbacks({ name: "训练过程" }, ["loss"]),
+  });
 };
